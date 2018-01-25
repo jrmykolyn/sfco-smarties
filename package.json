@@ -1,0 +1,19 @@
+{
+  "name": "sfco-smarties",
+  "version": "0.0.0",
+  "description": "Smarties is a JavaScript library that dynamically injects images into the current page/document.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrmykolyn/sfco-smarties.git"
+  },
+  "author": "Jesse R Mykolyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrmykolyn/sfco-smarties/issues"
+  },
+  "homepage": "https://github.com/jrmykolyn/sfco-smarties#readme"
+}
