@@ -8,7 +8,7 @@
 - [Documentation](#documentation)
 
 ## About
-/// TODO
+Smarties is a JavaScript library that dynamically injects images into the current page/document.
 
 ## Installation
 /// TODO
