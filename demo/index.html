@@ -1,11 +1,330 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Smarties - Demo</title>
-    </head>
-    <body>
-        <h1>Hello, world</h1>
-        <script src="../dist/sfco-smarties.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Smarties - Demo</title>
+    <style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    html {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 62.5%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        background: #fafafa;
+        font-size: 1.6rem;
+        padding-top: 4rem;
+    }
+
+    h1 {
+        margin: 0 0 4rem;
+        font-weight: 500;
+    }
+
+    main {
+        width: 94%;
+        max-width: 76rem;
+        margin: 0 auto 6rem;
+    }
+
+    main section {
+        background: #fff;
+        box-shadow: 0 0.2rem 2rem 0.5rem rgba( 0, 0, 0, 0.1 );
+        padding: 3rem;
+    }
+
+    main section:not( :last-child ) {
+        margin-bottom: 3rem;
+    }
+
+    section pre {
+        display: block;
+        background: #eee;
+        border: solid 0.1rem #ddd;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        overflow-x: auto;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    section button {
+        min-width: 15rem;
+        display: block;
+        color: #fff;
+        background: #1dd1a1;
+        border: 0;
+        border-radius: 0;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+
+        transition: all 0.2s;
+    }
+
+    section button:hover,
+    section button:focus {
+        background: #10ac84;
+    }
+
+    .footer {
+        width: 100%;
+        color: #fafafa;
+        background: #222;
+        padding: 3rem;
+
+        font-size: 1.4rem;
+    }
+
+    .footer__inner {
+        width: 94%;
+        max-width: 76rem;
+        margin: 0 auto;
+    }
+
+    .footer p {
+
+    }
+
+    .footer a {
+        color: #1dd1a1;
+        font-weight: 700;
+        transition: color 0.2s;
+    }
+
+    .footer a:hover,
+    .footer a:focus {
+        color: #10ac84;
+    }
+
+    </style>
+</head>
+<body>
+    <main>
+        <h1><strong>Smarties</strong> API Examples</h1>
+<!-- EXAMPLES - START -->
+<section class="example-wrapper">
+<pre>
+// No options.
+
+var ref = new Smarties();
+</pre>
+<button>Apply</button>
+</section>
+
+<section class="example-wrapper">
+<pre>
+// Options object with `backgroundColors` array.
+// NOTE: Providing 1x value overrides the default background color of the Smarties elements.
+
+var ref = new Smarties( {
+    backgroundColors: [
+        'darkslateblue',
+    ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `backgroundColors` array.
+// NOTE: Providing 2 or more items allows Smarties to randomly select from the available background colors at insertion time.
+
+var ref = new Smarties( {
+    backgroundColors: [
+        'darkslateblue',
+        '#ff0022',
+        'rgb( 0, 200, 50 )',
+        'rgba( 50, 100, 200, 0.5 )',
+    ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `sizes` array.
+// NOTE: Providing 1x value overrides the default size of the Smarties elements.
+
+var ref = new Smarties( {
+    sizes: [ '200px' ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `sizes` array.
+// NOTE: Providing 2 or more items allows Smarties to randomly select from the available sizes at insertion time.
+
+var ref = new Smarties( {
+    sizes: [
+        '75px',
+        '100px',
+        '12.5rem',
+        '2em'
+    ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `images` array.
+// NOTE: Providing 1x value replaces the default background color with the specified image.
+
+var ref = new Smarties( {
+    images: [ './assets/images/segal_1.jpg' ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `images` array.
+// NOTE: Providing 2 or more items allows Smarties to randomly select from the available images at insertion time.
+
+var ref = new Smarties( {
+    images: [
+        './assets/images/robo_1.png',
+        './assets/images/robo_2.png',
+        './assets/images/robo_3.png',
+        './assets/images/robo_4.png',
+        './assets/images/robo_5.png',
+    ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object with `images`, `sizes`, `backgroundColors`, and `forceBackgroundColor`.
+
+var ref = new Smarties( {
+    images: [
+        './assets/images/robo_1.png',
+        './assets/images/robo_2.png',
+        './assets/images/robo_3.png',
+        './assets/images/robo_4.png',
+        './assets/images/robo_5.png',
+    ],
+    sizes: [
+        '60px',
+        '100px',
+        '140px',
+    ],
+    backgroundColors: [
+        'darkslateblue',
+        '#ff0022',
+        'rgb( 0, 200, 50 )',
+        'rgba( 50, 100, 200, 0.5 )',
+    ],
+    forceBackgroundColor: true,
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section class="example-wrapper">
+<pre>
+// Options object pizza!
+
+var ref = new Smarties( {
+    images: [
+        './assets/images/pizza_1.png',
+        './assets/images/pizza_2.png',
+        './assets/images/pizza_3.png',
+        './assets/images/pizza_4.png',
+
+    ],
+    sizes: [
+        '100px',
+        '140px',
+        '180px',
+        '220px',
+    ],
+} );
+</pre>
+<button>Apply</button>
+</section>
+<!-- EXAMPLES - END -->
+    </main>
+    <footer class="footer">
+        <div class="footer__inner">
+            <p>Concept and code by <a href="https://github.com/jrmykolyn" target="_blank" rel="nofollow noopener">Jesse R Mykolyn</a>.</p>
+            <p>Steven Segal images(s) provided by <a href="http://www.stevensegallery.com/" target="_blank" rel="nofollow noopener">Steven SeGALLERY</a>.</p>
+            <p>Robot image(s) provided by <a href="https://robohash.org/" target="_blank" rel="nofollow noopener">Robohash</a>.</p>
+            <p>Pizza image(s) provided by <a href="https://www.cicis.com/" target="_blank" rel="nofollow noopener">Cicis</a>.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../dist/sfco-smarties.js"></script>
+    <script>
+    ( function( window, document ) {
+        function clearIntervals() {
+            let max = setInterval( function() {}, 999999 );
+
+            while ( max ) {
+                clearInterval( max );
+                max--;
+            }
+        }
+
+        document.addEventListener( 'DOMContentLoaded', function() {
+            var elems = document.querySelectorAll( '.example-wrapper' );
+
+            if ( elems ) {
+                elems.forEach( function( elem ) {
+                    var btnElem = elem.querySelector( 'button' );
+
+                    if ( btnElem ) {
+                        btnElem.addEventListener( 'click', function() {
+                            clearIntervals();
+                            Smarties.destroyAll();
+
+                            var preElem = elem.querySelector( 'pre' );
+                            var code = ( preElem ) ? preElem.innerHTML : 'console.log( "Whoops, something went wrong!" );';
+
+                            eval( code );
+                        } );
+                    }
+                } );
+            }
+        } );
+    } )( window, document );
+    </script>
+</body>
 </html>
