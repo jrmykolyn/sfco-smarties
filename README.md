@@ -6,6 +6,7 @@
 - [Setup](#setup)
 - [Usage](#usage)
 - [Documentation](#documentation)
+- [Demo](#demo)
 
 ## About
 Smarties is a JavaScript library that dynamically injects images into the current page/document.
@@ -23,3 +24,6 @@ Smarties is a JavaScript library that dynamically injects images into the curren
 Currently, Smarties does not include any external documentation.
 
 For an overview of the project's evolution, please consult the CHANGELOG.
+
+## Demo
+A demo of this project can be viewed [here](https://jrmykolyn.github.io/sfco-smarties/demo/).
