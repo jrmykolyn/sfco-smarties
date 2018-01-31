@@ -16,7 +16,7 @@
 	// --------------------------------------------------
 	function doSetup() {
 		if ( !document.getElementById( '#' + config.container ) ) {
-			let containerElem = document.createElement( 'div' );
+			var containerElem = document.createElement( 'div' );
 
 			containerElem.setAttribute( 'id', config.container );
 			containerElem.style.width = '100%';
@@ -37,14 +37,39 @@
 
 		// Set attributes.
 		elem.setAttribute( 'data-smartie-id', this.id );
-		elem.style.width = '100px';
-		elem.style.height = '100px';
-		elem.style.display = 'block';
-		elem.style.background = 'red'; /// TEMP
-		elem.style.borderRadius = '50%';
-		elem.style.position = 'absolute'; /// TEMP
+
+		// Set styles: dimensions.
+		var size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
+
+		elem.style.width = size;
+		elem.style.height = size;
+
+		// Set styles: position.
+		elem.style.position = 'absolute';
 		elem.style.top = ( Math.floor( Math.random() * 100 ) ) + '%';
 		elem.style.left = ( Math.floor( Math.random() * 100 ) ) + '%';
+
+		// Set styles: background.
+		var backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ];
+		var backgroundImage;
+
+		if ( this.images ) {
+			backgroundImage = this.images[ Math.floor( Math.random() * this.images.length ) ];
+			backgroundImage = 'url(' + backgroundImage + ')';
+			elem.style.backgroundImage = backgroundImage;
+		}
+
+		if ( !backgroundImage || this.forceBackgroundColor ) {
+			elem.style.backgroundColor = backgroundColor;
+		}
+
+		elem.style.backgroundPosition = 'center';
+		elem.style.backgroundSize = 'contain';
+		elem.style.backgroundRepeat = 'no-repeat';
+
+		// Set styles: misc.
+		elem.style.display = 'block';
+		elem.style.borderRadius = '50%';
 
 		// Insert into document.
 		var target = document.getElementById( config.container );
@@ -61,16 +86,19 @@
 		// Validate options.
 		options = ( options && typeof options === 'object' ) ? options : {};
 
-		let interval = options.interval && typeof options.interval === 'number' ? options.interval : 1000;
-
 		// Set instance props.
 		this.id = ++priv.count;
+		this.interval = options.interval && typeof options.interval === 'number' ? options.interval : 1000;
+		this.backgroundColors = options.backgroundColors && Array.isArray( options.backgroundColors ) ? options.backgroundColors : [ '#ddd' ];
+		this.sizes = options.sizes && Array.isArray( options.sizes ) ? options.sizes : [ '50px' ];
+		this.images = options.images && Array.isArray( options.images ) ? options.images : null;
+		this.forceBackgroundColor = !!options.forceBackgroundColor;
 		this.createdAt = new Date().getTime();
 
 		doSetup();
 
 		// Initiate 'injection'.
-		this.intervalId = setInterval( doInsert.bind( this ), interval );
+		this.intervalId = setInterval( doInsert.bind( this ), this.interval );
 
 		// Add current instance to private collection.
 		priv.instances.push( this );
@@ -88,7 +116,7 @@
 
 	Smarties.destroy = function( id ) {
 		if ( priv.instances.length ) {
-			let matchedTarget = false;
+			var matchedTarget = false;
 
 			priv.instances.forEach( function( instance ) {
 				if ( !matchedTarget ) {
