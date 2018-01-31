@@ -88,7 +88,7 @@
 
 		// Set instance props.
 		this.id = ++priv.count;
-		this.interval = options.interval && typeof options.interval === 'number' ? options.interval : 1000;
+		this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : 1000;
 		this.backgroundColors = options.backgroundColors && Array.isArray( options.backgroundColors ) ? options.backgroundColors : [ '#ddd' ];
 		this.sizes = options.sizes && Array.isArray( options.sizes ) ? options.sizes : [ '50px' ];
 		this.images = options.images && Array.isArray( options.images ) ? options.images : null;
@@ -98,7 +98,7 @@
 		doSetup();
 
 		// Initiate 'injection'.
-		this.intervalId = setInterval( doInsert.bind( this ), this.interval );
+		this.intervalId = setInterval( doInsert.bind( this ), this.intervalLength );
 
 		// Add current instance to private collection.
 		priv.instances.push( this );
