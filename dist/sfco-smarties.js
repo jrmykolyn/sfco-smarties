@@ -116,11 +116,14 @@
 		// Capture reference to current execution context.
 		var _this = this;
 
-		// Prevent injection of additional nodes.
-		clearInterval( this.intervalId );
+		// Preject initial inject if instantiated with `delay`.
+		clearTimeout( _this.timeoutId );
 
-		// Remove existing notes.
-		var elems = document.querySelectorAll( '[data-smartie-id="' + this.id + '"]' );
+		// Prevent injection of additional nodes.
+		clearInterval( _this.intervalId );
+
+		// Remove existing nodes.
+		var elems = document.querySelectorAll( '[data-smartie-id="' + _this.id + '"]' );
 
 		if ( elems ) {
 			elems.forEach( function( elem ) {
@@ -134,7 +137,7 @@
 		} );
 
 		// Return current instance id.
-		return this.id;
+		return _this.id;
 	}
 
 	Smarties.prototype.insert = function() {
