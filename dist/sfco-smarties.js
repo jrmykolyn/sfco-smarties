@@ -66,17 +66,17 @@
 		// NOTE: Only wrap initialization in `setTimeout` if `delay` provided (no need bump execution to end queue otherwise).
 		if ( _this.delay ) {
 			_this.timeoutId = setTimeout( function() {
-				_this.intervalId = setInterval( _this.insert.bind( _this ), this.intervalLength );
+				_this.intervalId = setInterval( _this.insert.bind( _this ), _this.intervalLength );
 			}, _this.delay );
 		} else {
 			_this.intervalId = setInterval( _this.insert.bind( _this ), _this.intervalLength );
 		}
 
 		// Add current instance to private collection.
-		priv.instances.push( this );
+		priv.instances.push( _this );
 
 		// Return current instance.
-		return this;
+		return _this;
 	}
 
 	// --------------------------------------------------
