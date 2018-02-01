@@ -56,6 +56,8 @@
 		_this.images = options.images && Array.isArray( options.images ) ? options.images : null;
 		_this.forceBackgroundColor = !!options.forceBackgroundColor;
 
+		_this.nodes = [];
+
 		_this.createdAt = new Date().getTime();
 
 		doSetup();
@@ -127,12 +129,12 @@
 		clearInterval( _this.intervalId );
 
 		// Remove existing nodes.
-		var elems = document.querySelectorAll( '[data-smartie-id="' + _this.id + '"]' );
-
-		if ( elems ) {
-			elems.forEach( function( elem ) {
-				elem.parentNode.removeChild( elem );
+		if ( Array.isArray( _this.nodes ) && _this.nodes.length ) {
+			_this.nodes.forEach( function( node ) {
+				node.parentNode.removeChild( node );
 			} );
+
+			_this.nodes = [];
 		}
 
 		// Remove current instance from private data.
@@ -145,14 +147,17 @@
 	}
 
 	Smarties.prototype.insert = function() {
+		// Capture reference to current execution context.
+		var _this = this;
+
 		// Create element.
 		var elem = document.createElement( 'div' );
 
 		// Set attributes.
-		elem.setAttribute( 'data-smartie-id', this.id );
+		elem.setAttribute( 'data-smartie-id', _this.id );
 
 		// Set styles: dimensions.
-		var size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
+		var size = _this.sizes[ Math.floor( Math.random() * _this.sizes.length ) ];
 
 		elem.style.width = size;
 		elem.style.height = size;
@@ -163,17 +168,17 @@
 		elem.style.left = ( Math.floor( Math.random() * 100 ) ) + '%';
 
 		// Set styles: background.
-		var backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ];
+		var backgroundColor = _this.backgroundColors[ Math.floor( Math.random() * _this.backgroundColors.length ) ];
 		var backgroundImage;
 
-		if ( this.images ) {
-			backgroundImage = this.images[ Math.floor( Math.random() * this.images.length ) ];
-			backgroundImage = 'url(' + backgroundImage + ')';
-			elem.style.backgroundImage = backgroundImage;
+		if ( _this.images ) {
+		    backgroundImage = _this.images[ Math.floor( Math.random() * _this.images.length ) ];
+		    backgroundImage = 'url(' + backgroundImage + ')';
+		    elem.style.backgroundImage = backgroundImage;
 		}
 
-		if ( !backgroundImage || this.forceBackgroundColor ) {
-			elem.style.backgroundColor = backgroundColor;
+		if ( !backgroundImage || _this.forceBackgroundColor ) {
+		    elem.style.backgroundColor = backgroundColor;
 		}
 
 		elem.style.backgroundPosition = 'center';
@@ -188,8 +193,10 @@
 		var target = document.getElementById( config.container );
 		target.appendChild( elem );
 
-		// Return element.
-		return elem;
+		// Add new `elem` to node list.
+		_this.nodes.push( elem );
+
+		return _this;
 	}
 
 	Smarties.prototype.stop = function() {
