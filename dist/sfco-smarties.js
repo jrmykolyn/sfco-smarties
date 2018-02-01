@@ -31,74 +31,40 @@
 		}
 	}
 
-	function doInsert() {
-		// Create element.
-		var elem = document.createElement( 'div' );
-
-		// Set attributes.
-		elem.setAttribute( 'data-smartie-id', this.id );
-
-		// Set styles: dimensions.
-		var size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
-
-		elem.style.width = size;
-		elem.style.height = size;
-
-		// Set styles: position.
-		elem.style.position = 'absolute';
-		elem.style.top = ( Math.floor( Math.random() * 100 ) ) + '%';
-		elem.style.left = ( Math.floor( Math.random() * 100 ) ) + '%';
-
-		// Set styles: background.
-		var backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ];
-		var backgroundImage;
-
-		if ( this.images ) {
-			backgroundImage = this.images[ Math.floor( Math.random() * this.images.length ) ];
-			backgroundImage = 'url(' + backgroundImage + ')';
-			elem.style.backgroundImage = backgroundImage;
-		}
-
-		if ( !backgroundImage || this.forceBackgroundColor ) {
-			elem.style.backgroundColor = backgroundColor;
-		}
-
-		elem.style.backgroundPosition = 'center';
-		elem.style.backgroundSize = 'contain';
-		elem.style.backgroundRepeat = 'no-repeat';
-
-		// Set styles: misc.
-		elem.style.display = 'block';
-		elem.style.borderRadius = '50%';
-
-		// Insert into document.
-		var target = document.getElementById( config.container );
-		target.appendChild( elem );
-
-		// Return element.
-		return elem;
-	}
-
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 	function Smarties( options ) {
+		// Capture reference to new instance.
+		var _this = this;
+
 		// Validate options.
 		options = ( options && typeof options === 'object' ) ? options : {};
 
 		// Set instance props.
-		this.id = ++priv.count;
-		this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : 1000;
-		this.backgroundColors = options.backgroundColors && Array.isArray( options.backgroundColors ) ? options.backgroundColors : [ '#ddd' ];
-		this.sizes = options.sizes && Array.isArray( options.sizes ) ? options.sizes : [ '50px' ];
-		this.images = options.images && Array.isArray( options.images ) ? options.images : null;
-		this.forceBackgroundColor = !!options.forceBackgroundColor;
-		this.createdAt = new Date().getTime();
+		_this.id = ++priv.count;
+
+		_this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : 1000;
+		_this.delay = options.delay && typeof options.delay === 'number' ? options.delay : null;
+
+		_this.backgroundColors = options.backgroundColors && Array.isArray( options.backgroundColors ) ? options.backgroundColors : [ '#ddd' ];
+		_this.sizes = options.sizes && Array.isArray( options.sizes ) ? options.sizes : [ '50px' ];
+		_this.images = options.images && Array.isArray( options.images ) ? options.images : null;
+		_this.forceBackgroundColor = !!options.forceBackgroundColor;
+
+		_this.createdAt = new Date().getTime();
 
 		doSetup();
 
 		// Initiate 'injection'.
-		this.intervalId = setInterval( doInsert.bind( this ), this.intervalLength );
+		// NOTE: Only wrap initialization in `setTimeout` if `delay` provided (no need bump execution to end queue otherwise).
+		if ( _this.delay ) {
+			_this.timeoutId = setTimeout( function() {
+				_this.intervalId = setInterval( _this.insert.bind( _this ), this.intervalLength );
+			}, _this.delay );
+		} else {
+			_this.intervalId = setInterval( _this.insert.bind( _this ), _this.intervalLength );
+		}
 
 		// Add current instance to private collection.
 		priv.instances.push( this );
@@ -169,6 +135,54 @@
 
 		// Return current instance id.
 		return this.id;
+	}
+
+	Smarties.prototype.insert = function() {
+		// Create element.
+		var elem = document.createElement( 'div' );
+
+		// Set attributes.
+		elem.setAttribute( 'data-smartie-id', this.id );
+
+		// Set styles: dimensions.
+		var size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
+
+		elem.style.width = size;
+		elem.style.height = size;
+
+		// Set styles: position.
+		elem.style.position = 'absolute';
+		elem.style.top = ( Math.floor( Math.random() * 100 ) ) + '%';
+		elem.style.left = ( Math.floor( Math.random() * 100 ) ) + '%';
+
+		// Set styles: background.
+		var backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ];
+		var backgroundImage;
+
+		if ( this.images ) {
+			backgroundImage = this.images[ Math.floor( Math.random() * this.images.length ) ];
+			backgroundImage = 'url(' + backgroundImage + ')';
+			elem.style.backgroundImage = backgroundImage;
+		}
+
+		if ( !backgroundImage || this.forceBackgroundColor ) {
+			elem.style.backgroundColor = backgroundColor;
+		}
+
+		elem.style.backgroundPosition = 'center';
+		elem.style.backgroundSize = 'contain';
+		elem.style.backgroundRepeat = 'no-repeat';
+
+		// Set styles: misc.
+		elem.style.display = 'block';
+		elem.style.borderRadius = '50%';
+
+		// Insert into document.
+		var target = document.getElementById( config.container );
+		target.appendChild( elem );
+
+		// Return element.
+		return elem;
 	}
 
 	// --------------------------------------------------
