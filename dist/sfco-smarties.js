@@ -6,6 +6,10 @@
 		container: 'smarties_container',
 	};
 
+	var defaults = {
+		intervalLength: 1000,
+	};
+
 	var priv = {
 		count: 0,
 		instances: [],
@@ -44,7 +48,7 @@
 		// Set instance props.
 		_this.id = ++priv.count;
 
-		_this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : 1000;
+		_this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : defaults.intervalLength;
 		_this.delay = options.delay && typeof options.delay === 'number' ? options.delay : null;
 
 		_this.backgroundColors = options.backgroundColors && Array.isArray( options.backgroundColors ) ? options.backgroundColors : [ '#ddd' ];
@@ -186,6 +190,22 @@
 
 		// Return element.
 		return elem;
+	}
+
+	Smarties.prototype.stop = function() {
+		var _this = this;
+
+		clearInterval( _this.intervalId );
+
+		return _this;
+	}
+
+	Smarties.prototype.start = function() {
+		var _this = this;
+
+		_this.intervalId = setInterval( _this.insert.bind( _this ), _this.intervalLength || defaults.intervalLength );
+
+		return _this;
 	}
 
 	// --------------------------------------------------
