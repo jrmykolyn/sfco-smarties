@@ -389,6 +389,7 @@ var ref = new Smarties( {
     <script src="../dist/sfco-smarties.js"></script>
     <script>
     ( function( window, document ) {
+        // DECLARE FUNCTIONS
         function clearIntervals() {
             let max = setInterval( function() {}, 999999 );
 
@@ -399,8 +400,8 @@ var ref = new Smarties( {
         }
 
         document.addEventListener( 'DOMContentLoaded', function() {
+            // Register event listeners.
             var elems = document.querySelectorAll( '.example-wrapper' );
-
             if ( elems ) {
                 elems.forEach( function( elem ) {
                     var btnElem = elem.querySelector( 'button' );
@@ -418,6 +419,32 @@ var ref = new Smarties( {
                     }
                 } );
             }
+
+            // Easter egg!
+            window.eggRef = new Smarties( {
+                backgroundColors: [
+                    '#706fd3',
+                    '#34ace0',
+                    '#33d9b2',
+                    '#ff793f',
+                    '#ffda79',
+                ],
+                sizes: [
+                    '40px',
+                    '60px',
+                    '80px',
+                    '100px',
+                ],
+                delay: 30000, // 30s
+            } );
+
+            window.addEventListener( 'click', function() {
+                if ( window.eggRef && window.eggRef instanceof Smarties ) {
+                    window.eggRef.destroy();
+                    delete window.eggRef;
+                }
+            } );
+
         } );
     } )( window, document );
     </script>
