@@ -144,6 +144,20 @@
         color: #10ac84;
     }
 
+    .count-elem {
+        color: #fff;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .grow-elem--pre {
+        transition: all 0.3s;
+    }
+
+    .grow-elem--post {
+        transform: scale( 1.5 );
+    }
     </style>
 </head>
 <body>
@@ -182,6 +196,12 @@
                     </li>
                     <li>
                         <a href="#instance_method_examples__background_color_and_image">use both a background color and an image?</a>
+                    </li>
+                    <li>
+                        <a href="#instance_method_examples__callback_before_insert">invoke a callback before each node is inserted?</a>
+                    </li>
+                    <li>
+                        <a href="#instance_method_examples__callback_after_insert">invoke a callback after each node is inserted?</a>
                     </li>
                     <li>
                         <a href="#instance_method_examples__pizza">cover the screen with pizza?</a>
@@ -352,6 +372,57 @@ var ref = new Smarties( {
 </section>
 
 
+<section id="instance_method_examples__callback_before_insert" class="example-wrapper">
+<pre>
+// Options object with `callbacks`. The `preInsert` callback can be used to maniplate each node prior to insertion.
+
+var count = 0;
+var ref = new Smarties( {
+    backgroundColors: [
+        'red',
+        'green',
+        'blue',
+    ],
+    callbacks: {
+        preInsert: function( nodeElem ) {
+            nodeElem.classList.add( 'count-elem' ); // Add a custom class to each node.
+            nodeElem.innerHTML = ++count; // Insert custom content into each node.
+        },
+    },
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section id="instance_method_examples__callback_after_insert" class="example-wrapper">
+<pre>
+// Options object with `callbacks`. The `postInsert` callback can be used to maniplate each node after insertion.
+
+var count = 0;
+var ref = new Smarties( {
+    backgroundColors: [
+        'red',
+        'green',
+        'blue',
+    ],
+    callbacks: {
+        preInsert: function( nodeElem ) {
+            nodeElem.classList.add( 'grow-elem--pre' );
+        },
+        postInsert: function( nodeElem ) {
+            // Add a custom class 500ms after insertion.
+            setTimeout( function() {
+                nodeElem.classList.add( 'grow-elem--post' );
+            }, 500 );
+        },
+    },
+} );
+</pre>
+<button>Apply</button>
+</section>
+
+
 <section id="instance_method_examples__pizza" class="example-wrapper">
 <pre>
 // Options object pizza!
@@ -419,32 +490,6 @@ var ref = new Smarties( {
                     }
                 } );
             }
-
-            // Easter egg!
-            window.eggRef = new Smarties( {
-                backgroundColors: [
-                    '#706fd3',
-                    '#34ace0',
-                    '#33d9b2',
-                    '#ff793f',
-                    '#ffda79',
-                ],
-                sizes: [
-                    '40px',
-                    '60px',
-                    '80px',
-                    '100px',
-                ],
-                delay: 30000, // 30s
-            } );
-
-            window.addEventListener( 'click', function() {
-                if ( window.eggRef && window.eggRef instanceof Smarties ) {
-                    window.eggRef.destroy();
-                    delete window.eggRef;
-                }
-            } );
-
         } );
     } )( window, document );
     </script>
