@@ -57,6 +57,7 @@
 		_this.forceBackgroundColor = !!options.forceBackgroundColor;
 
 		_this.nodes = [];
+		_this.callbacks = options.callbacks && typeof options.callbacks === 'object' ? options.callbacks : {};
 
 		_this.createdAt = new Date().getTime();
 
@@ -189,12 +190,22 @@
 		elem.style.display = 'block';
 		elem.style.borderRadius = '50%';
 
+		// Add new `elem` to node list.
+		_this.nodes.push(elem);
+
+		// Invoke `preInsert` callback if applicable.
+		if (_this.callbacks.preInsert && typeof _this.callbacks.preInsert === 'function') {
+			_this.callbacks.preInsert.call(_this, elem);
+		}
+
 		// Insert into document.
 		var target = document.getElementById(config.container);
 		target.appendChild(elem);
 
-		// Add new `elem` to node list.
-		_this.nodes.push(elem);
+		// Invoke `postInsert` callback if applicable.
+		if (_this.callbacks.postInsert && typeof _this.callbacks.postInsert === 'function') {
+			_this.callbacks.postInsert.call(_this, elem);
+		}
 
 		return _this;
 	};
