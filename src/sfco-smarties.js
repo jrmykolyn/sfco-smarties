@@ -231,7 +231,17 @@
 	Smarties.prototype.start = function() {
 		var _this = this;
 
+		// Invoke `preStart` callback if applicable.
+		if ( typeof _this.callbacks.preStart === 'function' ) {
+			_this.callbacks.preStart.call( _this, this.nodes );
+		}
+
 		_this.intervalId = setInterval( _this.insert.bind( _this ), _this.intervalLength || defaults.intervalLength );
+
+		// Invoke `postStart` callback if applicable.
+		if ( typeof _this.callbacks.postStart === 'function' ) {
+			_this.callbacks.postStart.call( _this, this.nodes );
+		}
 
 		return _this;
 	}
