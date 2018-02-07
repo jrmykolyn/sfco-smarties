@@ -213,7 +213,17 @@
 	Smarties.prototype.stop = function () {
 		var _this = this;
 
+		// Invoke `preStop` callback if applicable.
+		if (typeof _this.callbacks.preStop === 'function') {
+			_this.callbacks.preStop.call(_this, this.nodes);
+		}
+
 		clearInterval(_this.intervalId);
+
+		// Invoke `postStop` callback if applicable.
+		if (typeof _this.callbacks.postStop === 'function') {
+			_this.callbacks.postStop.call(_this, this.nodes);
+		}
 
 		return _this;
 	};
