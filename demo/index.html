@@ -204,6 +204,12 @@
                         <a href="#instance_method_examples__callback_after_insert">invoke a callback after each node is inserted?</a>
                     </li>
                     <li>
+                        <a href="#instance_method_examples__callback_before_stop">invoke a callback before the `stop()` method is executed?</a>
+                    </li>
+                    <li>
+                        <a href="#instance_method_examples__callback_after_stop">invoke a callback after the `stop()` method is executed?</a>
+                    </li>
+                    <li>
                         <a href="#instance_method_examples__pizza">cover the screen with pizza?</a>
                     </li>
                 </ul>
@@ -418,6 +424,46 @@ var ref = new Smarties( {
         },
     },
 } );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section id="instance_method_examples__callback_before_stop" class="example-wrapper">
+<pre>
+// Options object with `callbacks`. The `preStop` callback can be used to manipulate the document before the `stop()` method is called.
+
+var ref = new Smarties( {
+    callbacks: {
+        preStop: function( nodes ) {
+            alert( 'Inside `preStop` callback!' );
+        },
+    },
+} );
+
+setTimeout( function() {
+    ref.stop();
+}, 2000 );
+</pre>
+<button>Apply</button>
+</section>
+
+
+<section id="instance_method_examples__callback_after_stop" class="example-wrapper">
+<pre>
+// Options object with `callbacks`. The `preStop` callback can be used to manipulate the document after the `stop()` method is called.
+
+var ref = new Smarties( {
+    callbacks: {
+        postStop: function( nodes ) {
+            alert( 'Inside `postStop` callback!' );
+        },
+    },
+} );
+
+setTimeout( function() {
+    ref.stop();
+}, 2000 );
 </pre>
 <button>Apply</button>
 </section>
