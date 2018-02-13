@@ -167,6 +167,7 @@
 		elem.style.position = 'absolute';
 		elem.style.top = Math.floor(Math.random() * 100) + '%';
 		elem.style.left = Math.floor(Math.random() * 100) + '%';
+		elem.style.transform = 'translate( -50%, -50% )';
 
 		// Set styles: background.
 		var backgroundColor = _this.backgroundColors[Math.floor(Math.random() * _this.backgroundColors.length)];
