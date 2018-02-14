@@ -46,7 +46,7 @@
 			return priv.instances.slice( 0 );
 		}
 
-		static destroy() {
+		static destroy( id ) {
 			if ( priv.instances.length ) {
 				let matchedTarget = false;
 
