@@ -1,12 +1,48 @@
-'use strict';
+(function (global, factory) {
+	if (typeof define === "function" && define.amd) {
+		define(['module'], factory);
+	} else if (typeof exports !== "undefined") {
+		factory(module);
+	} else {
+		var mod = {
+			exports: {}
+		};
+		factory(mod);
+		global.Smarties = mod.exports;
+	}
+})(this, function (module) {
+	'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+		return typeof obj;
+	} : function (obj) {
+		return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	};
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _createClass = function () {
+		function defineProperties(target, props) {
+			for (var i = 0; i < props.length; i++) {
+				var descriptor = props[i];
+				descriptor.enumerable = descriptor.enumerable || false;
+				descriptor.configurable = true;
+				if ("value" in descriptor) descriptor.writable = true;
+				Object.defineProperty(target, descriptor.key, descriptor);
+			}
+		}
 
-(function (window, document) {
+		return function (Constructor, protoProps, staticProps) {
+			if (protoProps) defineProperties(Constructor.prototype, protoProps);
+			if (staticProps) defineProperties(Constructor, staticProps);
+			return Constructor;
+		};
+	}();
+
 	// --------------------------------------------------
 	// PRIVATE VARS.
 	// --------------------------------------------------
@@ -44,16 +80,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 	}
 
 	// --------------------------------------------------
-	// CONSTRUCTOR
+	// DECLARE CLASSES
 	// --------------------------------------------------
 
 	var Smarties = function () {
 		_createClass(Smarties, null, [{
 			key: 'all',
-
-			// --------------------------------------------------
-			// CLASS METHODS
-			// --------------------------------------------------
 			value: function all() {
 				return priv.instances.slice(0);
 			}
@@ -88,13 +120,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 				return instanceCount;
 			}
-
-			// --------------------------------------------------
-			// INSTANCE METHODS
-			// --------------------------------------------------
-
 		}]);
 
+		// INSTANCE METHODS
 		function Smarties(options) {
 			var _this = this;
 
@@ -270,7 +298,5 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 	// --------------------------------------------------
 	// PUBLIC API
 	// --------------------------------------------------
-
-
-	window.Smarties = Smarties;
-})(window, document);
+	module.exports = Smarties;
+});
