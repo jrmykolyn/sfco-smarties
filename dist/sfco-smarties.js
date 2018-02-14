@@ -59,7 +59,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 			}
 		}, {
 			key: 'destroy',
-			value: function destroy() {
+			value: function destroy(id) {
 				if (priv.instances.length) {
 					var matchedTarget = false;
 
