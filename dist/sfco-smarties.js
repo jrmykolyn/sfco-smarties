@@ -1,3 +1,11 @@
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 (function (window, document) {
 	// --------------------------------------------------
 	// PRIVATE VARS.
@@ -38,217 +46,231 @@
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
-	function Smarties(options) {
-		// Capture reference to new instance.
-		var _this = this;
 
-		// Validate options.
-		options = options && typeof options === 'object' ? options : {};
+	var Smarties = function () {
+		_createClass(Smarties, null, [{
+			key: 'all',
 
-		// Set instance props.
-		_this.id = ++priv.count;
+			// --------------------------------------------------
+			// CLASS METHODS
+			// --------------------------------------------------
+			value: function all() {
+				return priv.instances.slice(0);
+			}
+		}, {
+			key: 'destroy',
+			value: function destroy() {
+				if (priv.instances.length) {
+					var matchedTarget = false;
 
-		_this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : defaults.intervalLength;
-		_this.delay = options.delay && typeof options.delay === 'number' ? options.delay : null;
-
-		_this.backgroundColors = options.backgroundColors && Array.isArray(options.backgroundColors) ? options.backgroundColors : ['#ddd'];
-		_this.sizes = options.sizes && Array.isArray(options.sizes) ? options.sizes : ['50px'];
-		_this.images = options.images && Array.isArray(options.images) ? options.images : null;
-		_this.forceBackgroundColor = !!options.forceBackgroundColor;
-
-		_this.nodes = [];
-		_this.callbacks = options.callbacks && typeof options.callbacks === 'object' ? options.callbacks : {};
-
-		_this.createdAt = new Date().getTime();
-
-		doSetup();
-
-		// Initiate 'injection'.
-		// NOTE: Only wrap initialization in `setTimeout` if `delay` provided (no need bump execution to end queue otherwise).
-		if (_this.delay) {
-			_this.timeoutId = setTimeout(function () {
-				_this.intervalId = setInterval(_this.insert.bind(_this), _this.intervalLength);
-			}, _this.delay);
-		} else {
-			_this.intervalId = setInterval(_this.insert.bind(_this), _this.intervalLength);
-		}
-
-		// Add current instance to private collection.
-		priv.instances.push(_this);
-
-		// Return current instance.
-		return _this;
-	}
-
-	// --------------------------------------------------
-	// CLASS METHODS
-	// --------------------------------------------------
-	Smarties.all = function () {
-		return priv.instances.slice(0);
-	};
-
-	Smarties.destroy = function (id) {
-		if (priv.instances.length) {
-			var matchedTarget = false;
-
-			priv.instances.forEach(function (instance) {
-				if (!matchedTarget) {
-					if (instance.id === id) {
-						matchedTarget = true;
-						instance.destroy();
-					}
+					priv.instances.forEach(function (instance) {
+						if (!matchedTarget) {
+							if (instance.id === id) {
+								matchedTarget = true;
+								instance.destroy();
+							}
+						}
+					});
 				}
-			});
+
+				return priv.instances.slice(0);
+			}
+		}, {
+			key: 'destroyAll',
+			value: function destroyAll() {
+				var instanceCount = priv.instances.length;
+
+				if (instanceCount) {
+					priv.instances.forEach(function (instance) {
+						instance.destroy();
+					});
+				}
+
+				return instanceCount;
+			}
+
+			// --------------------------------------------------
+			// INSTANCE METHODS
+			// --------------------------------------------------
+
+		}]);
+
+		function Smarties(options) {
+			var _this = this;
+
+			_classCallCheck(this, Smarties);
+
+			// Validate options.
+			options = options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' ? options : {};
+
+			// Set instance props.
+			this.id = ++priv.count;
+
+			this.intervalLength = options.intervalLength && typeof options.intervalLength === 'number' ? options.intervalLength : defaults.intervalLength;
+			this.delay = options.delay && typeof options.delay === 'number' ? options.delay : null;
+
+			this.backgroundColors = options.backgroundColors && Array.isArray(options.backgroundColors) ? options.backgroundColors : ['#ddd'];
+			this.sizes = options.sizes && Array.isArray(options.sizes) ? options.sizes : ['50px'];
+			this.images = options.images && Array.isArray(options.images) ? options.images : null;
+			this.forceBackgroundColor = !!options.forceBackgroundColor;
+
+			this.nodes = [];
+			this.callbacks = options.callbacks && _typeof(options.callbacks) === 'object' ? options.callbacks : {};
+
+			this.createdAt = new Date().getTime();
+
+			doSetup();
+
+			// Initiate 'injection'.
+			// NOTE: Only wrap initialization in `setTimeout` if `delay` provided (no need bump execution to end queue otherwise).
+			if (this.delay) {
+				this.timeoutId = setTimeout(function () {
+					_this.intervalId = setInterval(_this.insert.bind(_this), _this.intervalLength);
+				}, this.delay);
+			} else {
+				this.intervalId = setInterval(this.insert.bind(this), this.intervalLength);
+			}
+
+			// Add current instance to private collection.
+			priv.instances.push(this);
+
+			// Return current instance.
+			return this;
 		}
 
-		return priv.instances.slice(0);
-	};
+		_createClass(Smarties, [{
+			key: 'destroy',
+			value: function destroy() {
+				var _this2 = this;
 
-	Smarties.destroyAll = function () {
-		var instanceCount = priv.instances.length;
+				// Preject initial inject if instantiated with `delay`.
+				clearTimeout(this.timeoutId);
 
-		if (instanceCount) {
-			priv.instances.forEach(function (instance) {
-				instance.destroy();
-			});
-		}
+				// Prevent injection of additional nodes.
+				clearInterval(this.intervalId);
 
-		return instanceCount;
-	};
+				// Remove existing nodes.
+				if (Array.isArray(this.nodes) && this.nodes.length) {
+					this.nodes.forEach(function (node) {
+						node.parentNode.removeChild(node);
+					});
 
-	// --------------------------------------------------
-	// INSTANCE METHODS
-	// --------------------------------------------------
-	Smarties.prototype.destroy = function () {
-		// Capture reference to current execution context.
-		var _this = this;
+					this.nodes = [];
+				}
 
-		// Preject initial inject if instantiated with `delay`.
-		clearTimeout(_this.timeoutId);
+				// Remove current instance from private data.
+				priv.instances = priv.instances.filter(function (instance) {
+					return instance.id !== _this2.id;
+				});
 
-		// Prevent injection of additional nodes.
-		clearInterval(_this.intervalId);
+				// Return current instance id.
+				return this.id;
+			}
+		}, {
+			key: 'insert',
+			value: function insert() {
+				// Create element.
+				var elem = document.createElement('div');
 
-		// Remove existing nodes.
-		if (Array.isArray(_this.nodes) && _this.nodes.length) {
-			_this.nodes.forEach(function (node) {
-				node.parentNode.removeChild(node);
-			});
+				// Set attributes.
+				elem.setAttribute('data-smartie-id', this.id);
 
-			_this.nodes = [];
-		}
+				// Set styles: dimensions.
+				var size = this.sizes[Math.floor(Math.random() * this.sizes.length)];
 
-		// Remove current instance from private data.
-		priv.instances = priv.instances.filter(function (instance) {
-			return instance.id !== _this.id;
-		});
+				elem.style.width = size;
+				elem.style.height = size;
 
-		// Return current instance id.
-		return _this.id;
-	};
+				// Set styles: position.
+				elem.style.position = 'absolute';
+				elem.style.top = Math.floor(Math.random() * 100) + '%';
+				elem.style.left = Math.floor(Math.random() * 100) + '%';
+				elem.style.transform = 'translate( -50%, -50% )';
 
-	Smarties.prototype.insert = function () {
-		// Capture reference to current execution context.
-		var _this = this;
+				// Set styles: background.
+				var backgroundColor = this.backgroundColors[Math.floor(Math.random() * this.backgroundColors.length)],
+				    backgroundImage = void 0;
 
-		// Create element.
-		var elem = document.createElement('div');
+				if (this.images) {
+					backgroundImage = this.images[Math.floor(Math.random() * this.images.length)];
+					backgroundImage = 'url(' + backgroundImage + ')';
+					elem.style.backgroundImage = backgroundImage;
+				}
 
-		// Set attributes.
-		elem.setAttribute('data-smartie-id', _this.id);
+				if (!backgroundImage || this.forceBackgroundColor) {
+					elem.style.backgroundColor = backgroundColor;
+				}
 
-		// Set styles: dimensions.
-		var size = _this.sizes[Math.floor(Math.random() * _this.sizes.length)];
+				elem.style.backgroundPosition = 'center';
+				elem.style.backgroundSize = 'contain';
+				elem.style.backgroundRepeat = 'no-repeat';
 
-		elem.style.width = size;
-		elem.style.height = size;
+				// Set styles: misc.
+				elem.style.display = 'block';
+				elem.style.borderRadius = '50%';
 
-		// Set styles: position.
-		elem.style.position = 'absolute';
-		elem.style.top = Math.floor(Math.random() * 100) + '%';
-		elem.style.left = Math.floor(Math.random() * 100) + '%';
-		elem.style.transform = 'translate( -50%, -50% )';
+				// Add new `elem` to node list.
+				this.nodes.push(elem);
 
-		// Set styles: background.
-		var backgroundColor = _this.backgroundColors[Math.floor(Math.random() * _this.backgroundColors.length)];
-		var backgroundImage;
+				// Invoke `preInsert` callback if applicable.
+				if (this.callbacks.preInsert && typeof this.callbacks.preInsert === 'function') {
+					this.callbacks.preInsert.call(this, elem);
+				}
 
-		if (_this.images) {
-			backgroundImage = _this.images[Math.floor(Math.random() * _this.images.length)];
-			backgroundImage = 'url(' + backgroundImage + ')';
-			elem.style.backgroundImage = backgroundImage;
-		}
+				// Insert into document.
+				var target = document.getElementById(config.container);
+				target.appendChild(elem);
 
-		if (!backgroundImage || _this.forceBackgroundColor) {
-			elem.style.backgroundColor = backgroundColor;
-		}
+				// Invoke `postInsert` callback if applicable.
+				if (this.callbacks.postInsert && typeof this.callbacks.postInsert === 'function') {
+					this.callbacks.postInsert.call(this, elem);
+				}
 
-		elem.style.backgroundPosition = 'center';
-		elem.style.backgroundSize = 'contain';
-		elem.style.backgroundRepeat = 'no-repeat';
+				return this;
+			}
+		}, {
+			key: 'stop',
+			value: function stop() {
+				// Invoke `preStop` callback if applicable.
+				if (typeof this.callbacks.preStop === 'function') {
+					this.callbacks.preStop.call(this, this.nodes);
+				}
 
-		// Set styles: misc.
-		elem.style.display = 'block';
-		elem.style.borderRadius = '50%';
+				clearInterval(this.intervalId);
 
-		// Add new `elem` to node list.
-		_this.nodes.push(elem);
+				// Invoke `postStop` callback if applicable.
+				if (typeof this.callbacks.postStop === 'function') {
+					this.callbacks.postStop.call(this, this.nodes);
+				}
 
-		// Invoke `preInsert` callback if applicable.
-		if (_this.callbacks.preInsert && typeof _this.callbacks.preInsert === 'function') {
-			_this.callbacks.preInsert.call(_this, elem);
-		}
+				return this;
+			}
+		}, {
+			key: 'start',
+			value: function start() {
+				// Invoke `preStart` callback if applicable.
+				if (typeof this.callbacks.preStart === 'function') {
+					this.callbacks.preStart.call(this, this.nodes);
+				}
 
-		// Insert into document.
-		var target = document.getElementById(config.container);
-		target.appendChild(elem);
+				this.intervalId = setInterval(this.insert.bind(this), this.intervalLength || defaults.intervalLength);
 
-		// Invoke `postInsert` callback if applicable.
-		if (_this.callbacks.postInsert && typeof _this.callbacks.postInsert === 'function') {
-			_this.callbacks.postInsert.call(_this, elem);
-		}
+				// Invoke `postStart` callback if applicable.
+				if (typeof this.callbacks.postStart === 'function') {
+					this.callbacks.postStart.call(this, this.nodes);
+				}
 
-		return _this;
-	};
+				return this;
+			}
+		}]);
 
-	Smarties.prototype.stop = function () {
-		var _this = this;
-
-		// Invoke `preStop` callback if applicable.
-		if (typeof _this.callbacks.preStop === 'function') {
-			_this.callbacks.preStop.call(_this, this.nodes);
-		}
-
-		clearInterval(_this.intervalId);
-
-		// Invoke `postStop` callback if applicable.
-		if (typeof _this.callbacks.postStop === 'function') {
-			_this.callbacks.postStop.call(_this, this.nodes);
-		}
-
-		return _this;
-	};
-
-	Smarties.prototype.start = function () {
-		var _this = this;
-
-		// Invoke `preStart` callback if applicable.
-		if (typeof _this.callbacks.preStart === 'function') {
-			_this.callbacks.preStart.call(_this, this.nodes);
-		}
-
-		_this.intervalId = setInterval(_this.insert.bind(_this), _this.intervalLength || defaults.intervalLength);
-
-		// Invoke `postStart` callback if applicable.
-		if (typeof _this.callbacks.postStart === 'function') {
-			_this.callbacks.postStart.call(_this, this.nodes);
-		}
-
-		return _this;
-	};
+		return Smarties;
+	}();
 
 	// --------------------------------------------------
 	// PUBLIC API
 	// --------------------------------------------------
+
+
 	window.Smarties = Smarties;
 })(window, document);

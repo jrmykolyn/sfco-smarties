@@ -2,15 +2,15 @@
 	// --------------------------------------------------
 	// PRIVATE VARS.
 	// --------------------------------------------------
-	var config = {
+	const config = {
 		container: 'smarties_container',
 	};
 
-	var defaults = {
+	const defaults = {
 		intervalLength: 1000,
 	};
 
-	var priv = {
+	const priv = {
 		count: 0,
 		instances: [],
 	};
@@ -20,7 +20,7 @@
 	// --------------------------------------------------
 	function doSetup() {
 		if ( !document.getElementById( '#' + config.container ) ) {
-			var containerElem = document.createElement( 'div' );
+			let containerElem = document.createElement( 'div' );
 
 			containerElem.setAttribute( 'id', config.container );
 			containerElem.style.width = '100%';
@@ -48,7 +48,7 @@
 
 		static destroy() {
 			if ( priv.instances.length ) {
-				var matchedTarget = false;
+				let matchedTarget = false;
 
 				priv.instances.forEach( ( instance ) => {
 					if ( !matchedTarget ) {
@@ -64,7 +64,7 @@
 		}
 
 		static destroyAll() {
-			var instanceCount = priv.instances.length;
+			let instanceCount = priv.instances.length;
 
 			if ( instanceCount ) {
 				priv.instances.forEach( ( instance ) => {
@@ -144,13 +144,13 @@
 
 		insert() {
 			// Create element.
-			var elem = document.createElement( 'div' );
+			let elem = document.createElement( 'div' );
 
 			// Set attributes.
 			elem.setAttribute( 'data-smartie-id', this.id );
 
 			// Set styles: dimensions.
-			var size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
+			let size = this.sizes[ Math.floor( Math.random() * this.sizes.length ) ];
 
 			elem.style.width = size;
 			elem.style.height = size;
@@ -162,8 +162,8 @@
 			elem.style.transform = 'translate( -50%, -50% )';
 
 			// Set styles: background.
-			var backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ];
-			var backgroundImage;
+			let backgroundColor = this.backgroundColors[ Math.floor( Math.random() * this.backgroundColors.length ) ],
+				backgroundImage;
 
 			if ( this.images ) {
 				backgroundImage = this.images[ Math.floor( Math.random() * this.images.length ) ];
@@ -192,7 +192,7 @@
 			}
 
 			// Insert into document.
-			var target = document.getElementById( config.container );
+			let target = document.getElementById( config.container );
 			target.appendChild( elem );
 
 			// Invoke `postInsert` callback if applicable.
