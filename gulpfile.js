@@ -31,6 +31,8 @@ gulp.task( 'default', [ 'scripts' ], function() {
  */
 gulp.task( 'scripts', function() {
 	return gulp.src( `${PATHS.src}/*.js` )
-		.pipe( babel() )
+		.pipe( babel( {
+			presets: [ 'env' ]
+		} ) )
 		.pipe( gulp.dest( PATHS.dest ) );
 } );
