@@ -28,11 +28,22 @@ gulp.task( 'default', [ 'scripts' ], function() {
 
 /**
  * Wrapper around any/all script-related tasks.
+ *
+ * NOTE:
+ * - `options.globals` must be provided in order to override the default module identifier (which is based on the file name of the module itself).
  */
 gulp.task( 'scripts', function() {
 	return gulp.src( `${PATHS.src}/*.js` )
 		.pipe( babel( {
-			presets: [ 'env' ]
+			presets: [ 'env' ],
+			plugins: [
+				[ 'transform-es2015-modules-umd', {
+					globals: {
+						'sfco-smarties': 'Smarties',
+					},
+					exactGlobals: true,
+				} ],
+			],
 		} ) )
 		.pipe( gulp.dest( PATHS.dest ) );
 } );
